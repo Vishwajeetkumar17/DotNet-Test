@@ -12,11 +12,7 @@
         /// Prompts the user to enter transaction details and creates a new sales transaction based on the provided
         /// input.
         /// </summary>
-        /// <remarks>This method interacts with the console to collect transaction information, including
-        /// invoice number, customer name, item name, quantity, purchase amount, and selling amount. It validates each
-        /// input and will not create a transaction if any required value is missing or invalid. Upon successful entry,
-        /// the transaction is saved and relevant calculations are performed. The most recent transaction is stored for
-        /// later retrieval. This method is intended for interactive console applications.</remarks>
+
         public void CreateTransaction()
         {
             Console.Write("Enter Invoice No: ");
@@ -44,21 +40,24 @@
             }
 
             Console.Write("Enter Quantity: ");
-            if (!int.TryParse(Console.ReadLine(), out int quantity) || quantity <= 0)
+            string? quantityInput = Console.ReadLine();
+            if (!int.TryParse(quantityInput, out int quantity) || quantity <= 0)
             {
                 Console.WriteLine("Quantity must be greater than zero.");
                 return;
             }
 
             Console.Write("Enter Purchase Amount (total): ");
-            if (!decimal.TryParse(Console.ReadLine(), out decimal purchaseAmount) || purchaseAmount <= 0)
+            string? purchaseAmt = Console.ReadLine();
+            if (!decimal.TryParse(purchaseAmt, out decimal purchaseAmount) || purchaseAmount <= 0)
             {
                 Console.WriteLine("Purchase Amount must be greater than zero.");
                 return;
             }
 
             Console.Write("Enter Selling Amount (total): ");
-            if (!decimal.TryParse(Console.ReadLine(), out decimal sellingAmount) || sellingAmount < 0)
+            string? sellingAmt = Console.ReadLine();
+            if (!decimal.TryParse(sellingAmt, out decimal sellingAmount) || sellingAmount < 0)
             {
                 Console.WriteLine("Selling Amount cannot be negative.");
                 return;
@@ -85,9 +84,6 @@
         /// <summary>
         /// Displays the details of the most recent transaction to the console.
         /// </summary>
-        /// <remarks>If there is no available transaction, a message is displayed prompting the user to
-        /// create a new transaction. The output includes invoice number, customer name, item details, quantities,
-        /// amounts, status, and profit or loss information.</remarks>
         public void ViewLastTransaction()
         {
             if (!HasLastTransaction || LastTransaction == null)
@@ -112,8 +108,6 @@
         /// <summary>
         /// Performs a recalculation using the most recent transaction, if available.
         /// </summary>
-        /// <remarks>If no previous transaction exists, the method does not perform any calculation and
-        /// displays a message indicating that a new transaction should be created first.</remarks>
         public void Recalculate()
         {
             if (!HasLastTransaction || LastTransaction == null)
@@ -131,11 +125,6 @@
         /// Calculates and updates the profit or loss status, amount, and profit margin percentage for the specified
         /// sale transaction.
         /// </summary>
-        /// <remarks>This method modifies the provided transaction object in place. Ensure that the
-        /// purchase amount is not zero to avoid division by zero errors when calculating the profit margin
-        /// percentage.</remarks>
-        /// <param name="transaction">The sale transaction to evaluate. Must not be null. The method updates the transaction's profit or loss
-        /// status, amount, and profit margin percentage based on its purchase and selling amounts.</param>
 
         private void Calculate(SaleTransaction transaction)
         {
@@ -163,7 +152,6 @@
         /// Outputs the profit or loss status, amount, and margin percentage of the specified sale transaction to the
         /// console.
         /// </summary>
-        /// <param name="transaction">The sale transaction whose profit or loss details are to be printed. Cannot be null.</param>
         private void PrintCalculation(SaleTransaction transaction)
         {
             Console.WriteLine($"Status: {transaction.ProfitOrLossStatus}");
@@ -174,9 +162,9 @@
         public static void Main(string[] args)
         {
             Program program = new Program();
-            bool running = true;
+            bool flag = true;
 
-            while (running)
+            while (flag)
             {
                 Console.WriteLine("======= QuickMart Traders =========");
                 Console.WriteLine("1. Create New Transaction (Enter Purchase & Selling Details)");
@@ -185,13 +173,14 @@
                 Console.WriteLine("4. Exit");
                 Console.Write("Enter your option: ");
 
-                if (!int.TryParse(Console.ReadLine(), out int option))
+                string? input = Console.ReadLine();
+                if (!int.TryParse(input, out int choice))
                 {
                     Console.WriteLine("Invalid option. Please enter a number.\n");
                     continue;
                 }
 
-                switch (option)
+                switch (choice)
                 {
                     case 1:
                         program.CreateTransaction();
@@ -204,10 +193,10 @@
                         break;
                     case 4:
                         Console.WriteLine("Thank you. Application closed normally.");
-                        running = false;
+                        flag = false;
                         break;
                     default:
-                        Console.WriteLine("Invalid menu option.\n");
+                        Console.WriteLine("Invalid menu option.");
                         break;
                 }
             }
