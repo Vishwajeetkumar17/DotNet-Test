@@ -44,21 +44,24 @@ namespace MediSureClinic
             }
 
             Console.Write("Enter Consultation Fee: ");
-            if (!decimal.TryParse(Console.ReadLine(), out decimal cFee) || cFee < 0)
+            string? cFeeInput = Console.ReadLine();
+            if (!decimal.TryParse(cFeeInput, out decimal cFee) || cFee < 0)
             {
                 Console.WriteLine("Enter correct Consultation Fee.");
                 return;
             }
 
             Console.Write("Enter Lab Charges: ");
-            if (!decimal.TryParse(Console.ReadLine(), out decimal lCharge) || lCharge < 0)
+            string? lChargeInput = Console.ReadLine();
+            if (!decimal.TryParse(lChargeInput, out decimal lCharge) || lCharge < 0)
             {
                 Console.WriteLine("Enter correct Lab Charges.");
                 return;
             }
 
             Console.Write("Enter Medicine Charges: ");
-            if (!decimal.TryParse(Console.ReadLine(), out decimal mCharge) || mCharge < 0)
+            string? mChargeInput = Console.ReadLine();
+            if (!decimal.TryParse(mChargeInput, out decimal mCharge) || mCharge < 0)
             {
                 Console.WriteLine("Enter correct Medicine Charges.");
                 return;
@@ -67,7 +70,7 @@ namespace MediSureClinic
             PatientBill bill = new PatientBill(
                 id,
                 name,
-                insured.Equals("Y", StringComparison.OrdinalIgnoreCase),
+                insured.Equals("Y"),
                 cFee,
                 lCharge,
                 mCharge
@@ -128,7 +131,8 @@ namespace MediSureClinic
                 Console.WriteLine("4. Exit");
                 Console.Write("Enter your option: ");
 
-                if (!int.TryParse(Console.ReadLine(), out int choice))
+                string? input = Console.ReadLine();
+                if (!int.TryParse(input, out int choice))
                 {
                     Console.WriteLine("Enter a valid option.\n");
                     continue;
@@ -147,7 +151,7 @@ namespace MediSureClinic
                         break;
                     case 4:
                         Console.WriteLine("Application closed.");
-                        Environment.Exit(0);
+                        flag = false;
                         break;
                     default:
                         Console.WriteLine("Invalid option.\n");
