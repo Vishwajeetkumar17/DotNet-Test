@@ -2,21 +2,28 @@
 
 namespace MediSureClinic
 {
-
     /// <summary>
-    /// Provides the main entry point and user interface logic for the MediSure Clinic billing application. Supports
-    /// creating, viewing, and clearing patient bills through a console-based menu.
+    /// Main program class for MediSure Clinic Billing system.
+    /// Handles user interaction and bill management.
     /// </summary>
     public class Program
     {
+        #region Fields
+
+        // Stores the most recently created patient bill
         static PatientBill? LastBill;
+
+        // Indicates whether a bill has been created
         static bool HasLastBill;
 
-        /// <summary>
-        /// Prompts the user to enter patient billing information and creates a new patient bill record based on the
-        /// provided input.
-        /// </summary>
+        #endregion
 
+        #region Bill Creation
+
+        /// <summary>
+        /// Collects billing details from the user and creates a new PatientBill.
+        /// Performs validation on all inputs.
+        /// </summary>
         public void CreateUser()
         {
             Console.Write("Enter Bill Id: ");
@@ -67,6 +74,7 @@ namespace MediSureClinic
                 return;
             }
 
+            // Create a new PatientBill object using user input
             PatientBill bill = new PatientBill(
                 id,
                 name,
@@ -76,16 +84,20 @@ namespace MediSureClinic
                 mCharge
             );
 
+            // Store the bill as the latest bill
             LastBill = bill;
             HasLastBill = true;
 
             Console.WriteLine("\nBill created successfully.\n");
         }
 
-        /// <summary>
-        /// Displays the details of the most recently created bill in a formatted output to the console.
-        /// </summary>
+        #endregion
 
+        #region View Bill
+
+        /// <summary>
+        /// Displays details of the last created bill.
+        /// </summary>
         public void VLastBill()
         {
             if (!HasLastBill || LastBill == null)
@@ -107,8 +119,12 @@ namespace MediSureClinic
             Console.WriteLine("----------------------------------------------\n");
         }
 
+        #endregion
+
+        #region Clear Bill
+
         /// <summary>
-        /// Clears the last bill information and resets the related state.
+        /// Clears the stored last bill and resets state.
         /// </summary>
         public void CLastBill()
         {
@@ -117,6 +133,14 @@ namespace MediSureClinic
             Console.WriteLine("Last bill cleared.\n");
         }
 
+        #endregion
+
+        #region Application Entry Point
+
+        /// <summary>
+        /// Displays menu and controls application flow.
+        /// </summary>
+        /// <param name="args">Command-line arguments (not used).</param>
         public static void Main(string[] args)
         {
             Program p = new Program();
@@ -159,5 +183,7 @@ namespace MediSureClinic
                 }
             }
         }
+
+        #endregion
     }
 }

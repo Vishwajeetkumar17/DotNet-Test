@@ -1,18 +1,29 @@
-﻿namespace QuickMartTraders
+﻿using System;
+
+namespace QuickMartTraders
 {
     /// <summary>
-    /// Provides the main entry point and user interface logic for the QuickMart Traders sales transaction application.
+    /// Provides the main entry point and user interface logic
+    /// for the QuickMart Traders sales transaction application.
     /// </summary>
     public class Program
     {
+        #region Fields
+
+        // Stores the most recently created sales transaction
         static SaleTransaction? LastTransaction;
+
+        // Indicates whether a transaction exists
         static bool HasLastTransaction;
 
-        /// <summary>
-        /// Prompts the user to enter transaction details and creates a new sales transaction based on the provided
-        /// input.
-        /// </summary>
+        #endregion
 
+        #region Transaction Creation
+
+        /// <summary>
+        /// Collects transaction details from the user and creates a new sale transaction.
+        /// Performs validation on all inputs.
+        /// </summary>
         public void CreateTransaction()
         {
             Console.Write("Enter Invoice No: ");
@@ -63,6 +74,7 @@
                 return;
             }
 
+            // Create and populate SaleTransaction object
             SaleTransaction transaction = new SaleTransaction();
             transaction.InvoiceNo = invoiceNo;
             transaction.CustomerName = customerName;
@@ -71,8 +83,10 @@
             transaction.PurchaseAmount = purchaseAmount;
             transaction.SellingAmount = sellingAmount;
 
+            // Perform profit/loss calculation
             Calculate(transaction);
 
+            // Store as last transaction
             LastTransaction = transaction;
             HasLastTransaction = true;
 
@@ -81,8 +95,12 @@
             Console.WriteLine("-------------------------\n");
         }
 
+        #endregion
+
+        #region View Transaction
+
         /// <summary>
-        /// Displays the details of the most recent transaction to the console.
+        /// Displays details of the most recent transaction.
         /// </summary>
         public void ViewLastTransaction()
         {
@@ -105,8 +123,12 @@
             Console.WriteLine("--------------------------\n");
         }
 
+        #endregion
+
+        #region Recalculation
+
         /// <summary>
-        /// Performs a recalculation using the most recent transaction, if available.
+        /// Recalculates profit or loss for the last transaction.
         /// </summary>
         public void Recalculate()
         {
@@ -121,11 +143,13 @@
             Console.WriteLine("----------------------------------\n");
         }
 
-        /// <summary>
-        /// Calculates and updates the profit or loss status, amount, and profit margin percentage for the specified
-        /// sale transaction.
-        /// </summary>
+        #endregion
 
+        #region Calculation Logic
+
+        /// <summary>
+        /// Determines profit or loss status, amount, and profit margin.
+        /// </summary>
         private void Calculate(SaleTransaction transaction)
         {
             if (transaction.SellingAmount > transaction.PurchaseAmount)
@@ -149,8 +173,7 @@
         }
 
         /// <summary>
-        /// Outputs the profit or loss status, amount, and margin percentage of the specified sale transaction to the
-        /// console.
+        /// Prints profit or loss calculation results to the console.
         /// </summary>
         private void PrintCalculation(SaleTransaction transaction)
         {
@@ -159,6 +182,13 @@
             Console.WriteLine($"Profit Margin (%): {transaction.ProfitMarginPercent:F2}");
         }
 
+        #endregion
+
+        #region Application Entry Point
+
+        /// <summary>
+        /// Main method that controls menu flow and user interaction.
+        /// </summary>
         public static void Main(string[] args)
         {
             Program program = new Program();
@@ -201,5 +231,7 @@
                 }
             }
         }
+
+        #endregion
     }
 }
